@@ -5,5 +5,4 @@ authors = ["Mendess2526 <pedro.mendes.26@gmail.com>"]
 
 [dependencies]
 memmap = "*"
-memchr = "*"
 rand = "*"
