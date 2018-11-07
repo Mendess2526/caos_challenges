@@ -17,7 +17,7 @@ fn do_it(line :&[u8]) {
     let mut sum :u64 = 0;
     let mut rng = rand::thread_rng();
     for _i in 0..rolls {
-        sum += rng.gen::<u64>() % faces;
+        sum += 1 + rng.gen::<u64>() % faces;
     }
     println!("{}", sum);
 }
