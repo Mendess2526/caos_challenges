@@ -13,7 +13,7 @@ fn do_it(line :&[u8]) {
     let mut faces :u64 = 0;
     let mut pre_d = true;
     for c in line {
-        if *c == 100 { // *c == 'd'
+        if *c == b'd' {
             pre_d = !pre_d;
             continue;
         }
@@ -37,7 +37,7 @@ fn main() -> std::io::Result<()> {
     let memmap = unsafe { MmapOptions::new().map(&file)? };
 
     let mid_time = SystemTime::now().duration_since(UNIX_EPOCH).unwrap();
-    memmap.split(|c| *c == 10) // *c == '\n'
+    memmap.split(|c| *c == b'\n') // *c == '\n'
         .for_each(|line| do_it(line));
 
     let end_time = SystemTime::now().duration_since(UNIX_EPOCH).unwrap();
