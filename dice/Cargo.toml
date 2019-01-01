@@ -6,3 +6,31 @@ authors = ["Mendess2526 <pedro.mendes.26@gmail.com>"]
 [dependencies]
 memmap = "*"
 rand = "*"
+
+[[bin]]
+name = "seq"
+path = "seq.rs"
+
+[[bin]]
+name = "par"
+path = "par.rs"
+
+[[bin]]
+name = "seq-lock-stdout"
+path = "seq-lock-stdout.rs"
+
+[[bin]]
+name = "seq-string-buf"
+path = "seq-string-buf.rs"
+
+[[bin]]
+name = "par-string-buf"
+path = "par-string-buf.rs"
+
+[[bin]]
+name = "seq-sum"
+path = "seq-sum.rs"
+
+[[bin]]
+name = "par-sum"
+path = "par-sum.rs"

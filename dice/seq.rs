@@ -41,9 +41,7 @@ fn main() -> std::io::Result<()> {
         .for_each(|line| do_it(line));
 
     let end_time = SystemTime::now().duration_since(UNIX_EPOCH).unwrap();
-    let load_time = mid_time - start_time;
-    let do_time   = end_time - mid_time;
-    eprintln!("Loadging file: {:?}", load_time);
-    eprintln!("Doing it:      {:?}", do_time);
+    eprintln!("Loadging file: {:?}", mid_time - start_time);
+    eprintln!("Doing it:      {:?}", end_time - mid_time);
     Ok(())
 }
