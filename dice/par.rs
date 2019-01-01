@@ -7,7 +7,6 @@ use rand::Rng;
 use std::time::{SystemTime, UNIX_EPOCH};
 use std::thread;
 
-
 fn do_it(line :&[u8]) {
     if line.len() < 1 { return; }
     let mut rolls :u64 = 0;
@@ -41,23 +40,24 @@ fn main() -> std::io::Result<()> {
 
     // ============== do ==================
     let chunk_size = 2_usize.pow(19);
-    let mut threads :Vec<thread::JoinHandle<_>> = Vec::with_capacity(1 + memmap.len() / chunk_size);
+    let mut threads = Vec::with_capacity(memmap.len() / chunk_size);
     let mut index :usize = chunk_size;
     let mut last_index :usize = 0;
     while index < memmap.len() {
-        while memmap[index] != 10 {
-            index += 1;
-        }
+        while memmap[index] != b'\n' { index += 1; }
         let slice: &'static [u8] = unsafe { &*(&memmap[last_index..index] as *const _) };
-        threads.push(thread::spawn(move ||
-                                   slice
-                                   .split(|c| *c == b'\n')
-                                   .for_each(|line| do_it(line))
-                                  ));
+        let runnable = move || {
+            slice
+                .split(|c| *c == b'\n')
+                .for_each(|line| do_it(line))
+        };
+        threads.push(thread::spawn(runnable));
         last_index = index;
         index = index + chunk_size;
     }
-    memmap[last_index..].split(|c| *c == b'\n').for_each(|line| do_it(line));
+    memmap[last_index..]
+        .split(|c| *c == b'\n')
+        .for_each(|line| do_it(line));
     for t in threads { t.join().unwrap(); }
     // ============ done ================
     let end_time = SystemTime::now().duration_since(UNIX_EPOCH).unwrap();

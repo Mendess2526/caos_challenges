@@ -42,8 +42,7 @@ fn main() -> std::io::Result<()> {
 
     // ============== do ==================
     let chunk_size = 2_usize.pow(19);
-    let mut threads :Vec<thread::JoinHandle<_>> =
-        Vec::with_capacity(memmap.len() / chunk_size);
+    let mut threads = Vec::with_capacity(memmap.len() / chunk_size);
     let mut index :usize = chunk_size;
     let mut last_index :usize = 0;
     let (tx, rx) :(Sender<u64>, Receiver<u64>)= mpsc::channel();
@@ -51,13 +50,14 @@ fn main() -> std::io::Result<()> {
         while memmap[index] != b'\n' { index += 1; }
         let slice: &'static [u8] = unsafe { &*(&memmap[last_index..index] as *const _) };
         let tx_clone = mpsc::Sender::clone(&tx);
-        threads.push(thread::spawn(move || {
+        let runnable = move || {
             let sum = slice
                 .split(|c| *c == b'\n')
                 .map(|line| do_it(line))
                 .sum();
             tx_clone.send(sum).unwrap();
-        }));
+        };
+        threads.push(thread::spawn(runnable));
         last_index = index;
         index = index + chunk_size;
     }
@@ -65,7 +65,6 @@ fn main() -> std::io::Result<()> {
         .split(|c| *c == b'\n')
         .map(|line| do_it(line))
         .sum();
-    std::mem::drop(tx);
     println!("{}", sum + rx.iter().sum::<u64>());
     for t in threads { t.join().unwrap(); }
     // ============ done ================
