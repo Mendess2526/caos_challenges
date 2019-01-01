@@ -4,7 +4,7 @@ extern crate rand;
 use std::fs::File;
 use memmap::MmapOptions;
 use rand::Rng;
-use std::time::{SystemTime, UNIX_EPOCH};
+use std::time::Instant;
 use std::thread;
 
 fn do_it(line :&[u8]) {
@@ -32,11 +32,11 @@ fn do_it(line :&[u8]) {
 }
 
 fn main() -> std::io::Result<()> {
-    let start_time = SystemTime::now().duration_since(UNIX_EPOCH).unwrap();
+    let start_time = Instant::now();
     let file = File::open("input.txt")?;
     let memmap = unsafe { MmapOptions::new().map(&file)? };
 
-    let mid_time = SystemTime::now().duration_since(UNIX_EPOCH).unwrap();
+    let mid_time = Instant::now();
 
     // ============== do ==================
     let chunk_size = 2_usize.pow(19);
@@ -60,8 +60,8 @@ fn main() -> std::io::Result<()> {
         .for_each(|line| do_it(line));
     for t in threads { t.join().unwrap(); }
     // ============ done ================
-    let end_time = SystemTime::now().duration_since(UNIX_EPOCH).unwrap();
-    eprintln!("Loadging file: {:?}", mid_time - start_time);
-    eprintln!("Doing it:      {:?}", end_time - mid_time);
+    let end_time = Instant::now();
+    eprintln!("Loadging file: {:?}", mid_time.duration_since(start_time));
+    eprintln!("Doing it:      {:?}", end_time.duration_since(mid_time));
     Ok(())
 }
