@@ -43,7 +43,7 @@ fn main() -> std::io::Result<()> {
     let end_time = SystemTime::now().duration_since(UNIX_EPOCH).unwrap();
     let load_time = mid_time - start_time;
     let do_time   = end_time - mid_time;
-    eprintln!("Loadging file: {} micros", load_time.as_secs() * 1000 + load_time.subsec_nanos() as u64 / 1_000);
-    eprintln!("Doing it:      {} micros", do_time.as_secs()   * 1000 + do_time.subsec_nanos()   as u64 / 1_000);
+    eprintln!("Loadging file: {:?}", load_time);
+    eprintln!("Doing it:      {:?}", do_time);
     Ok(())
 }
