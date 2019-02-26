@@ -45,7 +45,7 @@ fn main() -> std::io::Result<()> {
         .for_each(|line| do_it(line, &mut stdout_lock).unwrap());
 
     let end_time = Instant::now();
-    eprintln!("Loadging file: {:?}", mid_time.duration_since(start_time));
+    eprintln!("Loading file:  {:?}", mid_time.duration_since(start_time));
     eprintln!("Doing it:      {:?}", end_time.duration_since(mid_time));
     Ok(())
 }

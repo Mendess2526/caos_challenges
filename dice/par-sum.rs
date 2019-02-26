@@ -70,7 +70,7 @@ fn main() -> std::io::Result<()> {
     for t in threads { t.join().unwrap(); }
     // ============ done ================
     let end_time = Instant::now();
-    eprintln!("Loadging file: {:?}", mid_time.duration_since(start_time));
+    eprintln!("Loading file:  {:?}", mid_time.duration_since(start_time));
     eprintln!("Doing it:      {:?}", end_time.duration_since(mid_time));
     Ok(())
 }
