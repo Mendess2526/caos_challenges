@@ -12,6 +12,10 @@ name = "seq"
 path = "seq.rs"
 
 [[bin]]
+name = "seq-reader"
+path = "seq-reader.rs"
+
+[[bin]]
 name = "par"
 path = "par.rs"
 
