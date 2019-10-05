@@ -1,4 +1,4 @@
-use std::collections::BinaryHeap;
+use std::collections::HashSet;
 use std::io::{stdin, stdout, BufRead, BufReader, BufWriter, Write};
 
 fn main() {
@@ -11,7 +11,7 @@ fn main() {
     let numbers = numbers.into_boxed_slice();
     let out = stdout();
     let stdout = out.lock();
-    let mut tuples = BinaryHeap::new();
+    let mut tuples = HashSet::new();
     for (i, a) in numbers[..numbers.len() - 2].iter().enumerate() {
         let mut start = i + 1;
         let mut end = numbers.len() - 1;
@@ -19,7 +19,7 @@ fn main() {
             let b = numbers[start];
             let c = numbers[end];
             if a + b + c == 0 {
-                tuples.push((*a, b, c));
+                tuples.insert((a, b, c));
                 start += 1;
                 end -= 1;
             } else if a + b + c > 0 {
@@ -30,18 +30,9 @@ fn main() {
         }
     }
     let mut stdout = BufWriter::new(stdout);
-    let mut last = (i32::min_value(), i32::min_value(), i32::min_value());
-    tuples
-        .drain()
-        .filter(|t| {
-            if *t == last {
-                false
-            } else {
-                last = *t;
-                true
-            }
-        })
-        .for_each(|(a, b, c)| {
-            let _ = writeln!(stdout, "{} {} {}", a, b, c);
-        });
+    let mut tuples = tuples.iter().collect::<Vec<_>>();
+    tuples.sort_unstable();
+    tuples.iter().for_each(|(a, b, c)| {
+        let _ = writeln!(stdout, "{} {} {}", a, b, c);
+    });
 }
