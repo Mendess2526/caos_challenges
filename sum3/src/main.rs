@@ -11,7 +11,7 @@ fn main() {
     let numbers = numbers.into_boxed_slice();
     let out = stdout();
     let stdout = out.lock();
-    let mut tuples = HashSet::new();
+    let mut tuples = HashSet::with_capacity(numbers.len());
     for (i, a) in numbers[..numbers.len() - 2].iter().enumerate() {
         let mut start = i + 1;
         let mut end = numbers.len() - 1;
