@@ -1,0 +1,18 @@
+[package]
+name = "smooshed_morse"
+version = "0.1.0"
+authors = ["Mendess2526 <pedro.mendes.26@gmail.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+rand = "*"
+
+[[bin]]
+name = "easy"
+path = "src/easy.rs"
+
+[[bin]]
+name = "gen"
+path = "src/gen.rs"
